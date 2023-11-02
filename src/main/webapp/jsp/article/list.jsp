@@ -14,18 +14,11 @@
 <title>Article List</title>
 </head>
 <body>
-	<div>게시물 리스트 v1</div>
-	<ul>
-		<li><%= articleListMap.get(0).get("id") %> | <%= articleListMap.get(0).get("regDate") %> | <%= articleListMap.get(0).get("title") %></li>
-		<li><%= articleListMap.get(1).get("id") %> | <%= articleListMap.get(1).get("regDate") %> | <%= articleListMap.get(1).get("title") %></li>
-		<li><%= articleListMap.get(2).get("id") %> | <%= articleListMap.get(2).get("regDate") %> | <%= articleListMap.get(2).get("title") %></li>
-	</ul>
-	
-	<div>게시물 리스트 v2</div>
+	<div>게시물 리스트</div>
 	<ul>
 		<% for(Map<String,Object> articleMap : articleListMap) { 
 		%>
-			<li><%=articleMap.get("id") %> | <%=articleMap.get("regDate") %> | <%=articleMap.get("title") %></li>
+			<li><%=articleMap.get("id") %> | <%=articleMap.get("regDate") %> | <a href="detail?id=<%=articleMap.get("id") %>"><%=articleMap.get("title") %></a></li>
 		<% } %>
 	</ul>
 	
