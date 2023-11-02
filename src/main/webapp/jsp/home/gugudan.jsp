@@ -3,14 +3,14 @@
     
 <%
 	String inputDan = request.getParameter("dan");
-	String inputLimit= request.getParameter("Limit");
+	String inputLimit= request.getParameter("limit");
 	String inputColor = request.getParameter("color");
 	
 	if(inputDan == null){
 		inputDan = "1";
 	}
 	
-	if(inputLimit== null){
+	if(inputLimit == null){
 		inputLimit = "1";
 	}
 	
