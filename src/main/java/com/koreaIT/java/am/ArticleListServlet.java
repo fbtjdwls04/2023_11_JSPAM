@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.koreaIT.java.am.util.DBUtil;
+import com.koreaIT.java.am.util.SecSql;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,9 +28,19 @@ public class ArticleListServlet extends HttpServlet {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://127.0.0.1:3306/JAM?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+			String url = "jdbc:mysql://127.0.0.1:3306/JSP_AM?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 			conn = DriverManager.getConnection(url, "root", "");
+			
+			SecSql sql = new SecSql();
+			sql.append("SELECT * FROM article");
+			sql.append("ORDER BY id DESC");
+			
+			List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 
+			request.setAttribute("articleListMap", articleListMap);
+			
+			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
 			e.printStackTrace();
@@ -41,7 +56,7 @@ public class ArticleListServlet extends HttpServlet {
 			}
 		}
 		
-		response.getWriter().append("잘 되나?");
+		response.getWriter().append("<div>JSP_AM으로 연결이 잘 되었느냐</div>");
 	}
 	
 }
