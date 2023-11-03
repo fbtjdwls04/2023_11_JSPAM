@@ -9,5 +9,6 @@
 <body>
 	<h1>메인 페이지</h1>
 	<a href="../article/list">게시물 목록</a>
+	<a href="../article/write">게시물 작성</a>
 </body>
 </html>

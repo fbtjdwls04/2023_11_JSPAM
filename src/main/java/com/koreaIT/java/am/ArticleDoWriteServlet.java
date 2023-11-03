@@ -16,16 +16,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/delete")
-public class ArticleDeleteServlet extends HttpServlet {
+@WebServlet("/article/doWrite")
+public class ArticleDoWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		response.setContentType("text/html; charset=UTF-8;");
 		
-		String inputId = request.getParameter("id");
-		int id = Integer.parseInt(inputId);
+		String title = request.getParameter("title");
+		String body = request.getParameter("body");
 		
 		Connection conn = null;
 		
@@ -35,12 +35,16 @@ public class ArticleDeleteServlet extends HttpServlet {
 			conn = DriverManager.getConnection(url, "root", "");
 			
 			SecSql sql = new SecSql();
-			sql.append("DELETE FROM article");
-			sql.append("WHERE id = ?",id);
+			sql.append("INSERT INTO article");
+			sql.append("SET regDate = NOW(),");
+			sql.append("updateDate = NOW(),");
+			sql.append("memberId = 1,");
+			sql.append("title = ?,",title);
+			sql.append("body = ?",body);
 			
-			DBUtil.delete(conn, sql);
+			int id = DBUtil.insert(conn, sql);
 			
-			response.getWriter().append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list');</script>", id));
+			response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('detail?id=%d');</script>", id,id));
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
@@ -59,5 +63,4 @@ public class ArticleDeleteServlet extends HttpServlet {
 		
 		response.getWriter().append("<div>JSP_AM으로 연결이 잘 되었느냐</div>");
 	}
-	
 }
