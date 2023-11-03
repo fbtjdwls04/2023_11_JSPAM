@@ -16,8 +16,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/detail")
-public class ArticleDetail extends HttpServlet {
+@WebServlet("/article/delete")
+public class ArticleDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,14 +33,12 @@ public class ArticleDetail extends HttpServlet {
 			conn = DriverManager.getConnection(url, "root", "");
 			
 			SecSql sql = new SecSql();
-			sql.append("SELECT * FROM article");
+			sql.append("DELETE FROM article");
 			sql.append("WHERE id = ?",id);
 			
-			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-
-			request.setAttribute("articleMap", articleMap);
+			DBUtil.delete(conn, sql);
 			
-			request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
+			response.getWriter().append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list');</script>", id));
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");

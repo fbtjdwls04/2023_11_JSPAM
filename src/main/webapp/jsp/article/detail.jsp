@@ -21,5 +21,6 @@
 		<div>내 용 : <%= (String )todo.get("body") %></div>
 	</div>
 	<a href="list">게시물 목록</a>
+	<a href="delete?id=<%=(int)todo.get("id")%>">게시물 삭제</a>
 </body>
 </html>
