@@ -22,6 +22,14 @@ public class ArticleListServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String inputPage = request.getParameter("page");
+		
+		if(inputPage == null) {
+			inputPage = "1";
+		}
+		
+		int page = Integer.parseInt(inputPage);
+		
 		Connection conn = null;
 
 		try {
@@ -30,11 +38,37 @@ public class ArticleListServlet extends HttpServlet {
 			conn = DriverManager.getConnection(url, "root", "");
 			
 			SecSql sql = new SecSql();
+			sql.append("SELECT COUNT(*) FROM article");
+			
+			double totalcnt = DBUtil.selectRowIntValue(conn, sql);
+			int totalPage = (int)Math.ceil(totalcnt/10);
+			
+			int limitFrom = (page - 1) * 10;
+			int itemInAPage = 10;
+			
+			int pageSize = 5;
+			
+			int from = page - pageSize;
+			if(from < 1) {
+				from = 1;
+			}
+			int end = page + pageSize;
+			if(end > totalPage) {
+				end = totalPage;
+			}
+					
+			
+			sql = new SecSql();
 			sql.append("SELECT * FROM article");
 			sql.append("ORDER BY id DESC");
+			sql.append("LIMIT ?, ?",limitFrom ,itemInAPage);
 			
 			List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 
+			request.setAttribute("page", page);
+			request.setAttribute("from", from);
+			request.setAttribute("end", end);
+			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("articleListMap", articleListMap);
 			
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
@@ -53,8 +87,6 @@ public class ArticleListServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		
-		response.getWriter().append("<div>JSP_AM으로 연결이 잘 되었느냐</div>");
 	}
 	
 }
