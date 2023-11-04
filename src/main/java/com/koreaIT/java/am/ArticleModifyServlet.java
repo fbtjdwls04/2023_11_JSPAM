@@ -16,16 +16,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/doWrite")
-public class ArticleDoWriteServlet extends HttpServlet {
+@WebServlet("/article/modify")
+public class ArticleModifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.setContentType("text/html; charset=UTF-8;");
-		
-		String title = request.getParameter("title");
-		String body = request.getParameter("body");
+		String inputId = request.getParameter("id");
+		int id = Integer.parseInt(inputId);
 		
 		Connection conn = null;
 		
@@ -35,16 +33,14 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			conn = DriverManager.getConnection(url, "root", "");
 			
 			SecSql sql = new SecSql();
-			sql.append("INSERT INTO article");
-			sql.append("SET regDate = NOW(),");
-			sql.append("updateDate = NOW(),");
-			sql.append("memberId = 1,");
-			sql.append("title = ?,",title);
-			sql.append("body = ?",body);
+			sql.append("SELECT * FROM article");
+			sql.append("WHERE id = ?",id);
 			
-			int id = DBUtil.insert(conn, sql);
+			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+
+			request.setAttribute("articleMap", articleMap);
 			
-			response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('detail?id=%d');</script>", id,id));
+			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
@@ -61,4 +57,5 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			}
 		}
 	}
+	
 }
