@@ -15,13 +15,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style type="text/css">
-		.paging > .red {
-			color: red;
-			font-size: 1.5rem;
-			font-weight: bold;
-		}
-	</style>
+<link rel="stylesheet" href="../css/style.css" />
 <title>Article List</title>
 </head>
 <body>
@@ -29,6 +23,7 @@
 	<table border="1">
 		<colgroup>
 			<col />
+			<col width="200"/>
 			<col width="200"/>
 		</colgroup>
 		<tr>
@@ -47,7 +42,7 @@
 	
 	
 	
-	<div class="paging" style="margin-top: 20px; margin-left: 20px; ">
+	<div class="paging">
 		<%if(cPage > 1) {%>
 			<a href="list?page=1">처음으로</a>
 		<%} %>

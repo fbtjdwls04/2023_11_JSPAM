@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+body{
+	width: 500px;
+	margin: 100px auto;
+}
+
+a {
+	display: inline-block;
+	text-decoration: none;
+}
+
+a:active {
+	background-color: gray;
+}
+.paging {
+	margin-top: 20px;
+}
+.paging > .red {
+	color: red;
+	font-size: 1.5rem;
+	font-weight: bold;
+}

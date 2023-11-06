@@ -12,19 +12,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="../css/style.css" />
 <title>Insert title here</title>
 </head>
 <body>
 	<h1>게시물 수정</h1>
 	
-	<form action="doModify" style="border: 2px solid black; width: 500px; height: 500px;">
+	<form action="doModify" method="post" style="border: 2px solid black; width: 500px; height: 500px;">
 		<input name="id" type="hidden" value="<%= (int) todo.get("id") %>"/>
 		<div>번호 : <%= (int) todo.get("id") %></div>
 		<div>작성일 : <%= (LocalDateTime) todo.get("regDate") %></div>
 		<div>수정일 : <%= (LocalDateTime) todo.get("updateDate") %></div>
-		제 목 : <input name="title" type="text" value="<%= (String) todo.get("title") %>" />
-		<br />
-		내 용 : <textarea name="body" id="" cols="30" rows="10"><%= (String )todo.get("body") %></textarea>
+		<div>제 목 : <input name="title" type="text" value="<%= (String) todo.get("title") %>" /></div>
+		<div>내 용 : <textarea name="body" id="" cols="30" rows="10"><%= (String )todo.get("body") %></textarea></div>
 		<button>수정 완료</button>
 		<a href="detail?id=<%=(int)todo.get("id")%>">취소</a>
 	</form>

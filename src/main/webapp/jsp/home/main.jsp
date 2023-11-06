@@ -4,11 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="../css/main.css" />
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>메인 페이지</h1>
-	<a href="../article/list">게시물 목록</a>
-	<a href="../article/write">게시물 작성</a>
+	<div>
+		<h1>메인 페이지</h1>
+		<a href="../article/list">게시물 목록</a>
+		<a href="../article/write">게시물 작성</a>
+	</div>
 </body>
 </html>
