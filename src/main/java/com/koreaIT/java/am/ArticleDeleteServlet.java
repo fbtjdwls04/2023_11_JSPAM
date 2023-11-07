@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/delete")
 public class ArticleDeleteServlet extends HttpServlet {
@@ -28,6 +29,14 @@ public class ArticleDeleteServlet extends HttpServlet {
 		String inputId = request.getParameter("id");
 		int id = Integer.parseInt(inputId);
 		
+		HttpSession session = request.getSession();
+		
+		int loginedMemberId = -1;
+		
+		if(session.getAttribute("loginedMemberId") != null) {
+			loginedMemberId = (int)session.getAttribute("loginedMemberId");
+		}
+		
 		Connection conn = null;
 		
 		try {
@@ -36,6 +45,19 @@ public class ArticleDeleteServlet extends HttpServlet {
 			conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPassWd());
 			
 			SecSql sql = new SecSql();
+			sql.append("SELECT * FROM article");
+			sql.append("WHERE id = ?",id);
+			
+			Map<String,Object> articleMap = DBUtil.selectRow(conn, sql);
+			
+			int writerId = (int) articleMap.get("memberId");
+			
+			if(writerId != loginedMemberId) {
+				response.getWriter().append(String.format("<script>alert('권한이 없습니다'); location.replace('detail?id=%d')</script>",id));
+				return;
+			}
+			
+			sql = new SecSql();
 			sql.append("DELETE FROM article");
 			sql.append("WHERE id = ?",id);
 			

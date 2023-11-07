@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/modify")
 public class ArticleModifyServlet extends HttpServlet {
@@ -23,8 +24,18 @@ public class ArticleModifyServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		response.setContentType("text/html; charset=UTF-8;");
+		
 		String inputId = request.getParameter("id");
 		int id = Integer.parseInt(inputId);
+		
+		HttpSession session = request.getSession();
+		
+		int loginedMemberId = -1;
+		
+		if(session.getAttribute("loginedMemberId") != null) {
+			loginedMemberId = (int)session.getAttribute("loginedMemberId");
+		}
 		
 		Connection conn = null;
 		
@@ -38,7 +49,14 @@ public class ArticleModifyServlet extends HttpServlet {
 			sql.append("WHERE id = ?",id);
 			
 			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-
+			
+			int writerId = (int) articleMap.get("memberId");
+			
+			if(writerId != loginedMemberId) {
+				response.getWriter().append(String.format("<script>alert('권한이 없습니다'); location.replace('detail?id=%d')</script>",id));
+				return;
+			}
+			
 			request.setAttribute("articleMap", articleMap);
 			
 			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);

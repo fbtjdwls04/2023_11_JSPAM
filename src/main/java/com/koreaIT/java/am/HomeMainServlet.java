@@ -19,7 +19,6 @@ public class HomeMainServlet extends HttpServlet {
 		
 		int loginedMemberId = -1;
 		
-		
 		if(session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int)session.getAttribute("loginedMemberId");
 		}

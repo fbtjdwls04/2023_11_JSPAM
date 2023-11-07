@@ -60,7 +60,10 @@ public class ArticleListServlet extends HttpServlet {
 					
 			
 			sql = new SecSql();
-			sql.append("SELECT * FROM article");
+			sql.append("SELECT A.*, M.name as writerName");
+			sql.append("FROM article AS A");
+			sql.append("INNER JOIN members AS M");
+			sql.append("ON A.memberId = M.id");
 			sql.append("ORDER BY id DESC");
 			sql.append("LIMIT ?, ?",limitFrom ,itemInAPage);
 			

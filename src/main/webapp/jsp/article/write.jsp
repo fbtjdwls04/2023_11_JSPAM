@@ -10,7 +10,7 @@
 <body>
 	<h1>게시물 작성</h1>
 	<script>
-		function a(e) {
+		function writeFormSubmit(e) {
 			if(e.title.value.trim().length == 0){
 				alert('제목을 입력해주세요');
 				e.title.focus();
@@ -25,7 +25,7 @@
 			e.submit();
 		}
 	</script>
-	<form action="doWrite" method="post" onsubmit="a(this); return false;">
+	<form action="doWrite" method="post" onsubmit="writeFormSubmit(this); return false;">
 		<div>
 			제목 : <input name="title" type="text" placeholder="제목을 작성해주세요"/>
 		</div>

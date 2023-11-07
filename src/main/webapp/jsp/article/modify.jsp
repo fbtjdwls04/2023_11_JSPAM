@@ -17,8 +17,24 @@
 </head>
 <body>
 	<h1>게시물 수정</h1>
-	
-	<form action="doModify" method="post" style="border: 2px solid black; width: 500px; height: 500px;">
+	<script>
+		function modifyFormSubmit(e) {
+			if(e.title.value.trim().length == 0){
+				alert('제목을 입력해주세요');
+				e.title.focus();
+				return;
+			}
+			
+			if(e.body.value.trim().length == 0){
+				alert('내용을 입력해주세요');
+				e.body.focus();
+				return;
+			}
+			e.submit();
+		}
+	</script>
+	<form action="doModify" method="post" onsubmit="modifyFormSubmit(this); return false;" 
+	style="border: 2px solid black; width: 500px; height: 500px;">
 		<input name="id" type="hidden" value="<%= (int) todo.get("id") %>"/>
 		<div>번호 : <%= (int) todo.get("id") %></div>
 		<div>작성일 : <%= (LocalDateTime) todo.get("regDate") %></div>
