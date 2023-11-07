@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/doWrite")
 public class ArticleDoWriteServlet extends HttpServlet {
@@ -35,11 +36,20 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			String url = Config.getDBUrl();
 			conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPassWd());
 			
+			HttpSession session = request.getSession();
+			
+			if(session.getAttribute("loginedMemberId") == null) {
+				response.getWriter().append("<script>alert('로그인 후 사용이 가능합니다'); location.replace('../home/main');</script>");
+				return;
+			}
+			
+			int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			
 			SecSql sql = new SecSql();
 			sql.append("INSERT INTO article");
 			sql.append("SET regDate = NOW(),");
 			sql.append("updateDate = NOW(),");
-			sql.append("memberId = 1,");
+			sql.append("memberId = ?,",loginedMemberId);
 			sql.append("title = ?,",title);
 			sql.append("body = ?",body);
 			

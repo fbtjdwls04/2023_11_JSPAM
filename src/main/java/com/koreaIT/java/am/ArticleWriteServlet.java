@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/write")
 public class ArticleWriteServlet extends HttpServlet {
@@ -22,7 +23,14 @@ public class ArticleWriteServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.setContentType("text/html; charset=UTF-8;");
+		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			response.setContentType("text/html; charset=UTF-8;");
+			response.getWriter().append("<script>alert('로그인 후 사용이 가능합니다'); location.replace('../home/main');</script>");
+			return;
+		}
 		
 		request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
 	}
