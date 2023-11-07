@@ -1,13 +1,15 @@
 @charset "UTF-8";
-a{
+
+body, ul, li, a {
+	list-style: none;
 	text-decoration: none;
 	color: inherit;
 }
 
-a:hover{
-	color: gray;
+nav {
+	text-align: center;	
 }
 
-div {
-	text-align: center;
+a:hover{
+	color: gray;
 }

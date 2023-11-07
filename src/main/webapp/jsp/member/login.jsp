@@ -4,18 +4,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../css/style.css" />
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>회원 가입</h1>
+	<h1>로그인</h1>
 	<script>
-		const joinFormSubmit = (e) => {
+		const loginFormSubmit = (e) => {
 			
 			const loginId = e.loginId.value.trim();
 			const loginPw = e.loginPw.value.trim();
-			const loginPwChk = e.loginPwChk.value.trim();
-			const name = e.name.value.trim();
 			
 			if(loginId.length == 0){
 				alert('아이디를 입력해주세요');
@@ -29,33 +26,15 @@
 				return;
 			}
 			
-			if(loginPw != loginPwChk){
-				alert('비밀번호가 일치하지 않습니다');
-				e.loginPwChk.focus();
-				return;
-			}
-			
-			if(name.length == 0){
-				alert('이름을 입력해주세요');
-				e.name.focus();
-				return;
-			}
-			
 			e.submit();
 		} 
 	</script>	
-	<form action="doJoin" method="post" onsubmit="joinFormSubmit(this); return false;">
+	<form action="doLogin" method="post" onsubmit="loginFormSubmit(this); return false;">
 		<div>
 			아이디 : <input name="loginId" type="text" autocomplete="off"/>
 		</div>
 		<div>
 			비밀번호 : <input name="loginPw" type="password"/>
-		</div>
-		<div>
-			비밀번호 확인 : <input name="loginPwChk" type="password"/>
-		</div>
-		<div>
-			이름 : <input name="name" type="text" autocomplete="off"/>
 		</div>
 		
 		<button>확인</button>
